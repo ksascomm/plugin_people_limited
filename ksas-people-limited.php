@@ -1,8 +1,8 @@
 <?php
 /*
-Plugin Name: KSAS People Directory
+Plugin Name: KSAS Limited People Directory
 Plugin URI: http://krieger2.jhu.edu/comm/web/plugins/people
-Description: Creates a custom post type for people.  Use only on sites.krieger.jhu.edu websites.
+Description: Creates a custom post type for people. Allows users to create a directory without linking to profiles
 Version: 1.0
 Author: Cara Peckens
 Author URI: mailto:cpeckens@jhu.edu
@@ -98,6 +98,36 @@ function add_role_terms() {
 }
 add_action('init', 'add_role_terms');
 
+//Add directory filter taxonomy
+function register_filter_tax() {
+	$labels = array(
+		'name' 					=> _x( 'Directory Filters', 'taxonomy general name' ),
+		'singular_name' 		=> _x( 'Directory Filter', 'taxonomy singular name' ),
+		'add_new' 				=> _x( 'Add New Directory Filter', 'Directory Filter'),
+		'add_new_item' 			=> __( 'Add New Directory Filter' ),
+		'edit_item' 			=> __( 'Edit Directory Filter' ),
+		'new_item' 				=> __( 'New Directory Filter' ),
+		'view_item' 			=> __( 'View Directory Filter' ),
+		'search_items' 			=> __( 'Search Directory Filters' ),
+		'not_found' 			=> __( 'No Directory Filter found' ),
+		'not_found_in_trash' 	=> __( 'No Directory Filter found in Trash' ),
+	);
+	
+	$pages = array('people');
+				
+	$args = array(
+		'labels' 			=> $labels,
+		'singular_label' 	=> __('Directory Filter'),
+		'public' 			=> true,
+		'show_ui' 			=> true,
+		'hierarchical' 		=> true,
+		'show_tagcloud' 	=> false,
+		'show_in_nav_menus' => false,
+		'rewrite' 			=> array('slug' => 'filter', 'with_front' => false ),
+	 );
+	register_taxonomy('filter', $pages, $args);
+}
+add_action('init', 'register_filter_tax');
 
 //Add Personal details metabox
 $personaldetails_3_metabox = array( 
